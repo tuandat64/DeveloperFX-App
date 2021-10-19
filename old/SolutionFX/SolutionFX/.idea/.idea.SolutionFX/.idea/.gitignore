@@ -1,0 +1,13 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/projectSettingsUpdater.xml
+/.idea.SolutionFX.iml
+/modules.xml
+# Datasource local storage ignored files
+/../../../../../../../:\solutionfx-app\SolutionFX\SolutionFX\.idea\.idea.SolutionFX\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/

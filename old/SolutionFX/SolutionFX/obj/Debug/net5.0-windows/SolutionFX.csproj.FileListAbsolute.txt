@@ -1,0 +1,5 @@
+D:\solutionfx-app\SolutionFX\SolutionFX\obj\Debug\net5.0-windows\SolutionFX.csprojAssemblyReference.cache
+D:\solutionfx-app\SolutionFX\SolutionFX\obj\Debug\net5.0-windows\MainWindow.g.cs
+D:\solutionfx-app\SolutionFX\SolutionFX\obj\Debug\net5.0-windows\App.g.cs
+D:\solutionfx-app\SolutionFX\SolutionFX\obj\Debug\net5.0-windows\SolutionFX_MarkupCompile.cache
+D:\solutionfx-app\SolutionFX\SolutionFX\obj\Debug\net5.0-windows\SolutionFX_MarkupCompile.lref

@@ -1,0 +1,17 @@
+D:\solutionfx-app\solutionfx-app\solutionfx-app\bin\Release\solutionfx-app.exe.config
+D:\solutionfx-app\solutionfx-app\solutionfx-app\bin\Release\solutionfx-app.exe
+D:\solutionfx-app\solutionfx-app\solutionfx-app\bin\Release\solutionfx-app.pdb
+D:\solutionfx-app\solutionfx-app\solutionfx-app\bin\Release\websocket-sharp.dll
+D:\solutionfx-app\solutionfx-app\solutionfx-app\bin\Release\websocket-sharp.xml
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\MainWindow.g.cs
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\App.g.cs
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\solutionfx-app_MarkupCompile.cache
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\solutionfx-app_MarkupCompile.lref
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\MainWindow.baml
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\solutionfx-app.g.resources
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\solutionfx_app.Properties.Resources.resources
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\solutionfx-app.csproj.GenerateResource.cache
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\solutionfx-app.csproj.CoreCompileInputs.cache
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\solutionfx-app.csproj.CopyComplete
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\solutionfx-app.exe
+D:\solutionfx-app\solutionfx-app\solutionfx-app\obj\Release\solutionfx-app.pdb

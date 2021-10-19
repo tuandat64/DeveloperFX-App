@@ -14,32 +14,115 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.Drawing;
 
-namespace solutionfx_app
+namespace SolutionFX
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        WSS server;
         RegistryKey appKey;
         RegistryKey configKey;
         Dictionary<string, RegistryEntry> configMap;
 
+        System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
+        System.Windows.Forms.ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
+        System.Windows.Forms.MenuItem menuItemExit = new System.Windows.Forms.MenuItem();
+
+
         public MainWindow()
         {
+           
             InitializeComponent();
 
-            appKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32).OpenSubKey("Software\\SolutionFX");
+            this.server = Application.Current.
+
+            this.notifyIcon.Icon = new Icon(@"./../../SolutionFX.ico");
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.Text = "SolutionFX";
+            this.notifyIcon.MouseClick += (s, e) => { this.iconClicked(); };
+            this.contextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {this.menuItemExit});
+            this.menuItemExit.Index = 0;
+            this.menuItemExit.Text = "E&xit";
+            this.menuItemExit.Click += new EventHandler(this.menuItemExit_Click);
+            this.notifyIcon.ContextMenu = this.contextMenu;
+            
+
+            appKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32).OpenSubKey("Software\\SolutionFX", true);
             configKey = appKey.OpenSubKey("Configurations", true);
 
-            Console.WriteLine("Test");
             configMap = getExistingConfigs();
 
             foreach(string name in configMap.Keys.ToList())
             {
                 configList.Items.Add(name);
             }
+
+            string lastUsedConfig = getLastUsedConfig();
+            setConfig(lastUsedConfig);
+            setConfigFeilds(lastUsedConfig);
+
+        }
+
+        private void setNotifyIconLaunched()
+        {
+            this.notifyIcon.BalloonTipTitle = "MetaTrader launched";
+            this.notifyIcon.BalloonTipText = "Socket server running in background.";
+            this.notifyIcon.ShowBalloonTip(5);
+        }
+
+        private void launchClicked(object sender, RoutedEventArgs e)
+        {
+            ProcessStartInfo start = new ProcessStartInfo();
+
+            RegistryEntry launchConfig = configMap[configList.SelectedValue.ToString()];
+            start.Arguments = launchConfig.pathToIni;
+            start.FileName = launchConfig.pathToExe;
+            int exitCode;
+            Process.Start(start);
+
+            setLastUsedRegestry(configList.SelectedValue.ToString());
+
+            this.server.sendCustomMessage("__launch__");
+
+            Hide();
+
+            setNotifyIconLaunched();
+           
+        }
+
+        private void menuItemExit_Click(object Sender, EventArgs e)
+        {
+            // Close the form, which closes the application.
+            this.Close();
+        }
+
+        protected void iconClicked()
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                Console.Out.WriteLine("Minimized");
+                this.WindowState = WindowState.Normal;
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            this.server.sendCustomMessage("__exit__");
+        }
+
+        private void setConfig(string configName)
+        {
+            configList.SelectedIndex = configList.Items.IndexOf(configName);
+        }
+
+        private string getLastUsedConfig()
+        {
+            return appKey.GetValue("LastUsedConfig").ToString();
         }
 
         private void configListChanged(object Sender, RoutedEventArgs e)
@@ -89,12 +172,31 @@ namespace solutionfx_app
             {
                 launch.IsEnabled = true;
                 deleteConfig.IsEnabled = true;
+                setConfigFeilds(configList.SelectedValue.ToString());
             } 
             else
             {
                 launch.IsEnabled = false;
                 deleteConfig.IsEnabled = false;
+                removeConfigFeilds();
             }
+        }
+
+        private void setConfigFeilds(string configName)
+        {
+            if(configMap.ContainsKey(configName))
+            {
+                name.Text = configName;
+                pathToExe.Text = configMap[configName].pathToExe;
+                pathToIni.Text = configMap[configName].pathToIni;
+            }
+        }
+
+        private void removeConfigFeilds()
+        {
+            name.Text = "";
+            pathToExe.Text = "";
+            pathToIni.Text = "";
         }
 
         private bool shouldCreateBeEnabled() { 
@@ -104,17 +206,10 @@ namespace solutionfx_app
             }
             return false;
         }
-        private void launchClicked(object sender, RoutedEventArgs e)
+
+        private void setLastUsedRegestry(string val)
         {
-            ProcessStartInfo start = new ProcessStartInfo();
-
-            RegistryEntry launchConfig = configMap[configList.SelectedValue.ToString()];
-            start.Arguments = launchConfig.pathToIni;
-            start.FileName = launchConfig.pathToExe;
-            int exitCode;
-            Process.Start(start);
-
-            Application.Current.Shutdown();
+            appKey.SetValue("LastUsedConfig", val);
         }
 
         private void deleteClicked(object sender, RoutedEventArgs e)
@@ -174,6 +269,7 @@ namespace solutionfx_app
                 configMap[configName].pathToExe = pathToExe.Text.ToString();
                 configMap[configName].pathToIni = pathToIni.Text.ToString();
                 modifyKey(configMap[configName]);
+                confirmationLabel.Text = $"Configuration \"{configName}\" modified.";
             }
             else
             {
@@ -184,6 +280,7 @@ namespace solutionfx_app
                 addKey(newEntry);
                 configMap.Add(configName, newEntry);
                 configList.Items.Add(configName);
+                confirmationLabel.Text = $"Configuration {configName} created.";
             }
         }
 
