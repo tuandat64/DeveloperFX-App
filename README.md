@@ -10,3 +10,7 @@ L'infrastructure est est un serveur socket TCP qui permet de communiquer avec l'
 
 Ensuite, on a un serveur WebSocket avec plusieurs behavior (end point) qui permette de rediriger les informations obtenu du TCP socket server vers le bon endpoint du WebSocket server.
 
+
+# Pour lancer
+
+Exécuter le exe suivant : solutionfx-app/SolutionFX/bin/Debug/DeveloperFX.exe
